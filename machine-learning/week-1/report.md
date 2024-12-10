@@ -42,4 +42,4 @@
   - On fixing this, I have a lot of false positives in the final model, and I am not able to fix this, as I can't understand what action to take based on the SHAP analysis.
 
   ## The final (XGBoost) stats
-  
+  ![](https://raw.githubusercontent.com/0xDevansh/winter-of-code-2024/refs/heads/main/machine-learning/week-1/images/xgb_stats.png)
