@@ -12,4 +12,11 @@
   - However, I couldn't figure out how to boil down so many unique account names into a simple feature. If I extracted the `nameOrig` of all frauds into a list and added a yes/no feature to the dataset, this would indirectly mean encoding the `isFraud` column in an indirect way.
   - I also figured out that the same `nameOrig` was highly unlikely to appear in multiple fraud transactions (most of them were from unique accounts). A totally new `nameOrig` could lead to false negatives. This is why I dropped the idea of using that as a feature.
 - Then I drew some random plots to figure out some correlation in the data. There were 2 main things I found:
-  1) Plotting amount vs oldbalanceOrig gives the fraud transaction in a strange pattern (see the last green-red graph in the research notebook)
+  1) Plotting amount vs oldbalanceOrig gives the fraud transaction in a strange pattern (see Figure 1)
+  2) From the log scale plot it is clear that the data varies almost uniformly from 10^1 to 10^8, so linear scaling is not a good option, and taking log base 10 would linearize it pretty well. (see Figure 2)
+
+  ![](https://raw.githubusercontent.com/0xDevansh/winter-of-code-2024/refs/heads/main/machine-learning/week-1/images/strange_relation.png)
+  Figure 1
+
+  ![](https://raw.githubusercontent.com/0xDevansh/winter-of-code-2024/refs/heads/main/machine-learning/week-1/images/log_scale_graphs.png)
+  Figure 2
