@@ -4,7 +4,12 @@
 - The final pipeline (directly generates Logistic regression and XGBoost model) can be found [here](https://colab.research.google.com/drive/11L9gn8RSPUJQL788nF5nCYfvsq4BC4A2?usp=sharing). Run all cells and download the generated `xgb_model.joblib` file for the API.
 - Dataset used: [Google Drive link](https://drive.google.com/file/d/1_H0wTtfWyeo3lgA5q4yym4J6OkHjiWE8/view?usp=sharing),  [Kaggle link](https://www.kaggle.com/datasets/ealaxi/paysim1)
 
-- How the pipeline works should be clear by the pipeline notebook comments
+## API general instructions
+- Install all dependencies listed in `requirements.txt`
+- Execute `uvicorn server:app --reload`
+- Open the docs at http://localhost:8000/docs and send a POST request to /predict to get a prediction.
+- `trans_type` needs to be one of `'CASH_IN'`, `'CASH_OUT'`, `'TRANSFER'`, `'PAYMENT'`, `'DEBIT'`.
+- If you are using the sample in the pipeline Colab notebook, make sure to pass `scaled` as `true`. This means the data is already scaled, so the server-side code will not scale it down before passing it to the model.
 
 # The full approach
 - I started by selecting an [appropriate dataset on Kaggle](https://www.kaggle.com/datasets/ealaxi/paysim1). I uploaded the CSV file to Google Drive and synced it with Colab to load the dataset from it using pandas
@@ -38,8 +43,10 @@
 - SMOTE created the problem of generating too many samples, which massively slowed down all training processes. By oversampling using SMOTE, the random forests model took me 2 hours to train.
   - A friend later suggested me to try undersampling, which solved both problems of class imbalance and too many samples.
 
-- One blunder I had committed was applying SMOTE oversampling before the train and test split. This led to a literally perfect model where all scores were 0.99 (AUC, precision, f1 score, etc.). This seemed suspicious, and [I later found out](https://datascience.stackexchange.com/a/15633) that one should over/undersample only the train data, not the test one.
+- One blunder I had committed was applying SMOTE oversampling before the train and test split. This led to a literally perfect model where all scores were 0.99 (AUC, precision, f1 score, etc.). This seemed suspicious, and I later found out that [one should over/undersample only the train data, not the test one.](https://datascience.stackexchange.com/a/15633)
   - On fixing this, I have a lot of false positives in the final model, and I am not able to fix this, as I can't understand what action to take based on the SHAP analysis.
 
   ## The final (XGBoost) stats
   ![](https://raw.githubusercontent.com/0xDevansh/winter-of-code-2024/refs/heads/main/machine-learning/week-1/images/xgb_stats.png)
+
+- Overall, I am grateful for this challenging task, as it pushed me to learn a lot of different concepts and start my journey in ML, which I would not have done myself out of laziness.
